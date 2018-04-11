@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0632d37633950594899889b272604da8, type: 3}
+  m_Name: Platelegs
+  m_EditorClassIdentifier: 
+  name: Platelegs
+  icon: {fileID: 21300000, guid: 0549675f055039048a8f9a7dc3ede23b, type: 3}
+  isDefaultItem: 0
+  equipSlot: 2
+  mesh: {fileID: 137972657891451214, guid: 803dc045ef00084498fe8a1d1f2a8669, type: 2}
+  coveredMeshRegions: 00000000
+  armorModifier: 3
+  damageModifier: 0
