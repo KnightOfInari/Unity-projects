@@ -375,6 +375,9 @@
     <Compile Include="Assets\Script\Multi\Managers\GameManager.cs" />
     <Compile Include="Assets\Script\Multi\Managers\PlayerManager.cs" />
     <Compile Include="Assets\Script\Multi\Managers\WeaponManager.cs" />
+    <Compile Include="Assets\Script\Multi\Networking\HostGame.cs" />
+    <Compile Include="Assets\Script\Multi\Networking\JoinGame.cs" />
+    <Compile Include="Assets\Script\Multi\Networking\RoomListItem.cs" />
     <Compile Include="Assets\Script\Multi\Settings\MatchSettings.cs" />
     <Compile Include="Assets\Script\Multi\Settings\PlayerSetup.cs" />
     <Compile Include="Assets\Script\Multi\Settings\PlayerUI.cs" />

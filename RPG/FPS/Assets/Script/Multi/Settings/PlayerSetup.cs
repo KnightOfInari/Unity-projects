@@ -33,7 +33,7 @@ public class PlayerSetup : NetworkBehaviour
         }
         else
         {
-       
+
             // Disable player graphics for local player
             setLayerRecursively(playerGraphics, LayerMask.NameToLayer(dontDrawLayerName));
 
@@ -46,9 +46,10 @@ public class PlayerSetup : NetworkBehaviour
             if (ui == null)
                 Debug.LogError("No PlayerUI component on PlayerUI prefab");
             ui.SetController(GetComponent<PlayerControler>());
+
+            GetComponent<PlayerManager>().SetupPlayer();
         }
 
-        GetComponent<PlayerManager>().Setup();
     }
 
     void setLayerRecursively(GameObject obj, int newLayer)
@@ -93,9 +94,10 @@ public class PlayerSetup : NetworkBehaviour
     private void OnDisable()
     {
         Destroy(playerUIInstance);
-
-        GameManager.instance.SetSceneCameraActive(true);
-
+        if (isLocalPlayer)
+        {
+            GameManager.instance.SetSceneCameraActive(true);
+        }
         GameManager.UnRegisterPlayer(transform.name);
     }
 

@@ -15,7 +15,7 @@ public class PlayerManager : NetworkBehaviour
         get { return _isDead; }
         protected set { _isDead = value; }
     }
-    
+
     [SerializeField]
     private int maxHealth = 100;
 
@@ -35,28 +35,50 @@ public class PlayerManager : NetworkBehaviour
     [SerializeField]
     private GameObject spawnEffect;
 
-    //Initialises all player settings to default and enables controls.
-    public void Setup()
+    private bool firstSetup = true;
+
+    //Initialises player settings to default and enables controls.
+    public void SetupPlayer()
     {
-        wasEnabled = new bool[disableOnDeath.Length];
-        for (int i = 0; i < wasEnabled.Length; i++)
+        if (isLocalPlayer)
         {
-            wasEnabled[i] = disableOnDeath[i].enabled;
+            GameManager.instance.SetSceneCameraActive(false);
+            GetComponent<PlayerSetup>().playerUIInstance.SetActive(true);
         }
 
+        CmdBroadCastNewPlayerSetup();
+    }
+
+    [Command]
+    private void CmdBroadCastNewPlayerSetup()
+    {
+        RpcSetupPlayerOnAllClients();
+    }
+
+    [ClientRpc]
+    private void RpcSetupPlayerOnAllClients()
+    {
+        if (firstSetup)
+        {
+            wasEnabled = new bool[disableOnDeath.Length];
+            for (int i = 0; i < wasEnabled.Length; i++)
+            {
+                wasEnabled[i] = disableOnDeath[i].enabled;
+            }
+            firstSetup = false;
+        }
         SetDefaults();
     }
+    //private void Update()
+    //{
+    //    if (!isLocalPlayer)
+    //        return;
 
-    private void Update()
-    {
-        if (!isLocalPlayer)
-           return;
-
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            RpcTakeDamage(6000);
-        }
-    }
+    //    if (Input.GetKeyDown(KeyCode.K))
+    //    {
+    //        RpcTakeDamage(6000);
+    //    }
+    //}
 
 
     //Client calculates the damages taken by the player if currentHealth <= 0 player dies
@@ -127,7 +149,9 @@ public class PlayerManager : NetworkBehaviour
         transform.position = _spawnPoint.position;
         transform.rotation = _spawnPoint.rotation;
 
-        SetDefaults();
+        yield return new WaitForSeconds(0.1f); // Small delay to make sure the positions are set before we set the player up
+
+        SetupPlayer();
 
         Debug.Log(transform.name + " respawned.");
     }
@@ -154,11 +178,7 @@ public class PlayerManager : NetworkBehaviour
         {
             _col.enabled = true;
         }
-        if (isLocalPlayer)
-        {
-            GameManager.instance.SetSceneCameraActive(false);
-            GetComponent<PlayerSetup>().playerUIInstance.SetActive(true);
-        }
+
 
         //create spawn effect
         GameObject _gfxIns = (GameObject)Instantiate(spawnEffect, transform.position, Quaternion.identity);
