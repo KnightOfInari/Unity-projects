@@ -33,6 +33,10 @@ public class PlayerShoot : NetworkBehaviour
     // IF SO IT SHOOTS
     private void Update()
     {
+        if (PauseMenu.IsOn)
+        {
+            return;
+        }
         currentWeapon = weaponManager.GetCurrentWeapon();
         //If fire rate is eqals to 0 or inferior, make the weapon semi automatic and shoot only once
         if (currentWeapon.fireRate <= 0f)

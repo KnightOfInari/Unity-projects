@@ -60,6 +60,11 @@ public class PlayerControler : MonoBehaviour
     {
         //this update method calculates the movement of the player
 
+        if (PauseMenu.IsOn)
+        {
+            return;
+        }
+
         //Setting Target Position for spring
         // This makes the physics act rigth to apply gravity when flying
         RaycastHit _hit;

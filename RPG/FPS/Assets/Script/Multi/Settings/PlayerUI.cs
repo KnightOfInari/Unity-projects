@@ -4,9 +4,17 @@ public class PlayerUI : MonoBehaviour
 {
 
     [SerializeField]
+    GameObject pauseMenu;
+
+    [SerializeField]
     RectTransform thrusterFuelFill;
 
     private PlayerControler controler;
+
+    void Start()
+    {
+        PauseMenu.IsOn = false;
+    }
 
     public void SetController(PlayerControler _controler)
     {
@@ -18,6 +26,17 @@ public class PlayerUI : MonoBehaviour
     void Update()
     {
         SetFuelAmount(controler.GetThrusterFuelAmount());
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            TogglePauseMenu();
+        }
+    }
+
+    void TogglePauseMenu()
+    {
+        pauseMenu.SetActive(!pauseMenu.activeSelf);
+        PauseMenu.IsOn = pauseMenu.activeSelf;
     }
 
     void SetFuelAmount(float _amount)

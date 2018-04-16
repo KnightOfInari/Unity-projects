@@ -20,6 +20,7 @@ public class JoinGame : MonoBehaviour
     [SerializeField]
     private Transform roomListParent;
 
+    //Sets the network manager to the single existing instance. Refreshes room list to see if there are already existing servers
     private void Start()
     {
         networkManager = NetworkManager.singleton;
@@ -30,23 +31,24 @@ public class JoinGame : MonoBehaviour
         RefreshRoomList();
     }
 
+    //Refreshes servers room list
     public void RefreshRoomList()
     {
-        ClearRoomList();
+        ClearRoomList(); //clears list before refreshing it
         networkManager.matchMaker.ListMatches(0, 20, "", true, 0, 0, OnMatchList);
-        status.text = "Loading...";
+        status.text = "Loading..."; 
     }
 
     public void OnMatchList(bool success, string extendedInfo, List<MatchInfoSnapshot> matchList)
     {
         status.text = "";
-
+        //chekcs if list is not null and if it was gotten
         if (!success ||matchList == null)
         {
             status.text = "unable to get room list.";
             return;
         }
-
+        //adds found matches to list room
         foreach (MatchInfoSnapshot match in matchList)
         {
             GameObject _roomListItemGO = Instantiate(roomListItemPrefab);
@@ -62,7 +64,7 @@ public class JoinGame : MonoBehaviour
 
             roomList.Add(_roomListItemGO);
         }
-        if (roomList.Count == 0)
+        if (roomList.Count == 0) // if there is no room
         {
             status.text = "No rooms found at the moment";
         }
